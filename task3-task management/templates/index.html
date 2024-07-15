@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Todo List</h1>
+    <p>Welcome, {{ current_user.username }}! <a href="{{ url_for('logout') }}">Logout</a></p>
+    <form method="POST" action="{{ url_for('home') }}">
+        <input type="text" name="todo_name" placeholder="Enter new todo">
+        <button type="submit">Add Todo</button>
+    </form>
+    <ul>
+        {% for todo in items %}
+        <li>
+            <form method="POST" action="{{ url_for('checked_todo', todo_id=todo.id) }}" style="display: inline;">
+                <button type="submit">{{ 'Uncheck' if todo.checked else 'Check' }}</button>
+            </form>
+            {{ todo.name }}
+            <form method="POST" action="{{ url_for('delete_todo', todo_id=todo.id) }}" style="display: inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
